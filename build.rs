@@ -7,6 +7,8 @@ fn main() {
 
     cbindgen::Builder::new()
         .with_crate(crate_dir)
+        //TODO: uncomment to produce a header file fully compatible with C
+        // .with_language(cbindgen::Language::C)
         .generate()
         .expect("Unable to generate bindings")
         .write_to_file("namada_light_sdk.h");
