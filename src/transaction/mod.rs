@@ -26,10 +26,7 @@ impl TryFrom<GlobalArgs> for transaction::GlobalArgs {
         } else {
             Some(DateTimeUtc::from_str(&expiration).format_err()?)
         };
-        let chain_id = ChainId::from_str(&global_args
-            .chain_id
-            .to_string()
-        ).format_err()?;
+        let chain_id = ChainId::from_str(&global_args.chain_id.to_string()).format_err()?;
         Ok(transaction::GlobalArgs {
             expiration,
             code_hash: Hash(global_args.code_hash),

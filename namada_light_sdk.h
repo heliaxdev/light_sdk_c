@@ -4,36 +4,12 @@
 #include <ostream>
 #include <new>
 
-struct Tx {
-  void *inner;
-};
-
-struct RevealPk {
-  Tx _0;
-};
-
 using CString = const char*;
 
-template<typename T>
 struct CResult {
-  enum class Tag {
-    Ok,
-    Err,
-  };
-
-  struct Ok_Body {
-    T _0;
-  };
-
-  struct Err_Body {
-    CString _0;
-  };
-
-  Tag tag;
-  union {
-    Ok_Body ok;
-    Err_Body err;
-  };
+  bool is_err;
+  CString error_msg;
+  void *value;
 };
 
 struct GlobalArgs {
@@ -42,8 +18,23 @@ struct GlobalArgs {
   CString chain_id;
 };
 
+struct Hashes {
+  uint8_t (*ptr)[32];
+  uintptr_t len;
+};
+
+struct RevealPk {
+  void *_0;
+};
+
 extern "C" {
 
-CResult<RevealPk> new_reveal_pk(CString public_key, GlobalArgs args);
+CResult new_reveal_pk(CString public_key, GlobalArgs args);
+
+Hashes get_sign_bytes_reveal_pk(const RevealPk *reveal_pk_tx);
+
+CResult attach_raw_signatures_reveal_pk(RevealPk reveal_pk_tx,
+                                        CString public_key,
+                                        CString signature);
 
 } // extern "C"

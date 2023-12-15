@@ -1,44 +1,33 @@
 use std::error::Error;
+use std::ffi::c_void;
 use std::ffi::{c_char, CStr};
 use std::fmt::{Debug, Display, Formatter};
-use std::ffi::c_void;
 
 #[repr(transparent)]
 #[derive(Debug)]
 pub struct CString(*const c_char);
 
-
 impl From<String> for CString {
     fn from(value: String) -> Self {
         let bytes = value.into_bytes();
-        let mut c_chars: Vec<i8> = bytes.iter().map(| c | *c as i8).collect::<Vec<i8>>();
+        let mut c_chars: Vec<i8> = bytes.iter().map(|c| *c as i8).collect::<Vec<i8>>();
         c_chars.push(0);
-        Self(c_chars.as_ptr())
+        let reference = Box::leak(Box::new(c_chars));
+        Self(reference.as_ptr())
     }
 }
 
 impl From<CString> for String {
     fn from(value: CString) -> Self {
-        let slice = unsafe {
-            CStr::from_ptr(value.0)
-        };
-        slice.to_str().unwrap().to_string()
+        let slice = unsafe { CStr::from_ptr(value.0) };
+        slice.to_string_lossy().to_string()
     }
 }
 
 impl Display for CString {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let slice = unsafe {
-            CStr::from_ptr(self.0)
-        };
-        let msg = match slice.to_str() {
-            Err(e) => {
-                println!("Could not parse {} as a CString", e.to_string());
-                return Err(std::fmt::Error::default());
-            }
-            Ok(s) => s,
-        };
-        f.write_str(msg)
+        let slice = unsafe { CStr::from_ptr(self.0) };
+        f.write_str(slice.to_string_lossy().as_ref())
     }
 }
 
@@ -57,16 +46,32 @@ impl<R, E: Error> FormatErr for Result<R, E> {
     }
 
     fn wrap_err(self, msg: &str) -> Result<R, CString> {
-        self.map_err(|e| {
-            format!("{}\n{}", msg, e.to_string()).into()
-        })
+        self.map_err(|e| format!("{}\n{}", msg, e.to_string()).into())
+    }
+}
+
+impl<T, E: Error> From<Result<T, E>> for CResult {
+    fn from(value: Result<T, E>) -> Self {
+        match value {
+            Ok(ty) => CResult {
+                is_err: false,
+                error_msg: "".to_string().into(),
+                value: allocate(ty),
+            },
+            Err(e) => CResult {
+                is_err: true,
+                error_msg: e.to_string().into(),
+                value: std::ptr::null_mut(),
+            },
+        }
     }
 }
 
 #[repr(C)]
-pub enum CResult<T> {
-    Ok(T),
-    Err(CString)
+pub struct CResult {
+    pub is_err: bool,
+    pub error_msg: CString,
+    pub value: *mut c_void,
 }
 
 /// Put a rust object into the heap and return
