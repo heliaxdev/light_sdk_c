@@ -1,12 +1,11 @@
 use std::ffi::c_void;
 use std::str::FromStr;
 
-use light_sdk::namada_core::proto::Tx as NamadaTx;
 use light_sdk::namada_core::types::key::common;
 use light_sdk::transaction::account;
 
 use crate::transaction::GlobalArgs;
-use crate::types::{Hashes, Tx};
+use crate::types::Hashes;
 use crate::utils::{allocate, CResult, CString, FormatErr};
 
 #[repr(C)]

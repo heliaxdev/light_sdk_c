@@ -46,7 +46,7 @@ impl<R, E: Error> FormatErr for Result<R, E> {
     }
 
     fn wrap_err(self, msg: &str) -> Result<R, CString> {
-        self.map_err(|e| format!("{}\n{}", msg, e.to_string()).into())
+        self.map_err(|e| format!("{}\n{}", msg, e).into())
     }
 }
 

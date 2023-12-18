@@ -21,7 +21,7 @@ impl TryFrom<GlobalArgs> for transaction::GlobalArgs {
 
     fn try_from(global_args: GlobalArgs) -> Result<Self, Self::Error> {
         let expiration = global_args.expiration.to_string();
-        let expiration = if &expiration == "" {
+        let expiration = if expiration.is_empty() {
             None
         } else {
             Some(DateTimeUtc::from_str(&expiration).format_err()?)

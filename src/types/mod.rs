@@ -1,6 +1,4 @@
-use crate::utils::allocate;
-use light_sdk::namada_core::proto::Tx as NamadaTx;
-use std::{ffi::c_void, ops::DerefMut};
+use std::ffi::c_void;
 
 #[repr(C)]
 pub struct Tx {
