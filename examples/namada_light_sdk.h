@@ -26,6 +26,8 @@ typedef struct RevealPk {
   void *_0;
 } RevealPk;
 
+struct CResult is_public_key_revealed(CString tendermint_addr, CString owner);
+
 struct CResult new_reveal_pk(CString public_key, struct GlobalArgs args);
 
 struct Hashes get_sign_bytes_reveal_pk(const struct RevealPk *reveal_pk_tx);

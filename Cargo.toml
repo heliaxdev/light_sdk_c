@@ -8,9 +8,10 @@ crate-type = ["cdylib", "rlib"]
 
 
 [dependencies]
-borsh = {version = "=1.0.0-alpha.4"}
-borsh-derive= {version = "=1.0.0-alpha.4"}
-light_sdk = {git = "https://github.com/anoma/namada", branch = "adrian/light-sdk"}
+borsh = {version = "1.2.0"}
+borsh-derive= {version = "1.2.0"}
+# light_sdk = {git = "https://github.com/anoma/namada", branch = "adrian/light-sdk"}
+light_sdk = {path = "../namada/light_sdk"}
 
 [build-dependencies]
 cbindgen = "0.26.0"

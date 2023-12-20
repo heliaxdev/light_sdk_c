@@ -1,3 +1,4 @@
+#include <cstring>
 extern "C" {
     #include "./namada_light_sdk.h"
 }
@@ -17,10 +18,10 @@ int main(int argc, char** argv) {
     struct GlobalArgs test_args = {
             .expiration = "",
             .code_hash = *code_hash,
-            .chain_id = "namada-internal.00000000000-0"
+            .chain_id = "namada-internal.000000000000-0"
     };
 
-    if (test_args.expiration == "") {
+    if (strcmp(test_args.expiration, "") == 0) {
         cout << "Expiration: None" << endl;
     } else {
         cout << "Expiration: " << test_args.expiration << endl;
@@ -57,5 +58,12 @@ int main(int argc, char** argv) {
         cout << "Error: " << signed_tx.error_msg << endl;
     } else {
         cout << "Result: Ok" << endl;
+    }
+
+    CResult is_pk_revealed = is_public_key_revealed("0.0.0.0:26657", "tnam1qxfj3sf6a0meahdu9t6znp05g8zx4dkjtgyn9gfu");
+    if (is_pk_revealed.is_err) {
+        cout << "Error: " << is_pk_revealed.error_msg << endl;
+    } else {
+        cout << "Result: " << *static_cast<bool*>(is_pk_revealed.value) << endl;
     }
 }
