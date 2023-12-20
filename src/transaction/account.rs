@@ -1,8 +1,8 @@
 use std::ffi::c_void;
 use std::str::FromStr;
 
-use light_sdk::namada_core::types::key::common;
-use light_sdk::transaction::account;
+use namada_light_sdk::namada_core::types::key::common;
+use namada_light_sdk::transaction::account;
 
 use crate::transaction::GlobalArgs;
 use crate::types::Hashes;

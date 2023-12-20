@@ -1,9 +1,9 @@
 use std::str::FromStr;
 
-use light_sdk::namada_core::types::address::Address;
-use light_sdk::reading;
+use namada_light_sdk::namada_core::types::address::Address;
+use namada_light_sdk::reading;
 
-use crate::utils::{allocate, CResult, CString, FormatErr};
+use crate::utils::{allocate, CResult, CString};
 
 #[no_mangle]
 pub extern "C" fn is_public_key_revealed(tendermint_addr: CString, owner: CString) -> CResult {

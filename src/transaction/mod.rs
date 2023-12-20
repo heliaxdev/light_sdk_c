@@ -2,10 +2,10 @@ pub mod account;
 
 use std::str::FromStr;
 
-use light_sdk::namada_core::types::chain::ChainId;
-use light_sdk::namada_core::types::hash::Hash;
-use light_sdk::namada_core::types::time::DateTimeUtc;
-use light_sdk::transaction;
+use namada_light_sdk::namada_core::types::chain::ChainId;
+use namada_light_sdk::namada_core::types::hash::Hash;
+use namada_light_sdk::namada_core::types::time::DateTimeUtc;
+use namada_light_sdk::transaction;
 
 use crate::utils::{CString, FormatErr};
 
