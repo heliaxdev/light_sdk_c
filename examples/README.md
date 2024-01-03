@@ -13,7 +13,9 @@ produced by compiling the Rust ffi code. In this small example, a `RevealPk` tra
 - built in Rust and returned the C++ program
 - The C++ then requests the necessary bytes to be signed
 - A signature was produced offline and hardcoded into the C++ program
-- Finally, the program attaches the signature to the tx.
+- The program attaches the signature to the tx.
+- Then a query is sent to see if this public key has already been revealed.
+- If it has not, the tx is broadcast to the ledger.
 
 ## Building and running
 
@@ -24,4 +26,4 @@ Afterwords, you can place the generated `namada_light_sdk.h` and `./target/debug
 ```bash
 g++ example.cpp L. -l namada_light_sdk_ffi.so
 ```
-The resulting `a.out` file can then be executed.
+Don't forget to add the sub-directory to the `LD_LIBRARY_PATH`. The resulting `a.out` file can then be executed.

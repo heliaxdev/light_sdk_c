@@ -35,7 +35,3 @@ impl TryFrom<GlobalArgs> for transaction::GlobalArgs {
     }
 }
 
-#[repr(C)]
-pub enum TxKind {
-    RevealPk,
-}
