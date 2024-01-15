@@ -11,7 +11,7 @@ crate-type = ["cdylib", "rlib"]
 borsh = {version = "1.2.0"}
 borsh-derive= {version = "1.2.0"}
 # namada_light_sdk = {git = "https://github.com/anoma/namada", branch = "adrian/light-sdk"}
-namada_light_sdk = {path = "../namada/light_sdk"}
+namada_light_sdk = {path = "../namada/light_sdk", features = ["blocking"]}
 
 [build-dependencies]
 cbindgen = "0.26.0"

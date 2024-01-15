@@ -34,4 +34,3 @@ impl TryFrom<GlobalArgs> for transaction::GlobalArgs {
         })
     }
 }
-

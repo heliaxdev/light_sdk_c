@@ -20,7 +20,7 @@ impl RevealPk {
 
     fn to_native_ref(&self) -> &account::RevealPk {
         let tx = self.0 as *mut account::RevealPk;
-         unsafe {
+        unsafe {
             tx.as_ref()
                 .expect("Expected initialized RevealPk, found null pointer")
         }
@@ -109,7 +109,13 @@ pub extern "C" fn reveal_pk_attach_fee(
     CResult {
         is_err: false,
         error_msg: "".to_string().into(),
-        value: allocate(RevealPk(allocate(tx.attach_fee(fee, token, fee_payer, epoch.into(), gas_limit.into()))))
+        value: allocate(RevealPk(allocate(tx.attach_fee(
+            fee,
+            token,
+            fee_payer,
+            epoch.into(),
+            gas_limit.into(),
+        )))),
     }
 }
 
@@ -123,14 +129,14 @@ pub extern "C" fn reveal_pk_get_fee_sign_bytes(reveal_pk_tx: &RevealPk) -> Hashe
         .into_boxed_slice();
     let len = hash.len();
     let ptr = Box::into_raw(hash) as *mut [u8; 32];
-    Hashes{ len, ptr }
+    Hashes { len, ptr }
 }
 
 #[no_mangle]
 pub extern "C" fn attach_fee_signature(
     reveal_pk_tx: RevealPk,
     public_key: CString,
-    signature: CString
+    signature: CString,
 ) -> CResult {
     let tx = reveal_pk_tx.to_native();
     let signer = match common::PublicKey::from_str(&public_key.to_string()) {
@@ -157,7 +163,9 @@ pub extern "C" fn reveal_pk_validate_tx(reveal_pk: &RevealPk) -> CResult {
     match tx.validate_tx() {
         Ok(None) => CResult {
             is_err: true,
-            error_msg: "This tx is not of correct type and will not rejected by the mempool".to_string().into(),
+            error_msg: "This tx is not of correct type and will not rejected by the mempool"
+                .to_string()
+                .into(),
             value: std::ptr::null_mut(),
         },
         Ok(Some(_)) => CResult {
@@ -165,7 +173,7 @@ pub extern "C" fn reveal_pk_validate_tx(reveal_pk: &RevealPk) -> CResult {
             error_msg: "".to_string().into(),
             value: std::ptr::null_mut(),
         },
-        e => e.into()
+        e => e.into(),
     }
 }
 
@@ -174,6 +182,6 @@ pub extern "C" fn reveal_pk_payload(reveal_pk_tx: RevealPk) -> Tx {
     let tx = reveal_pk_tx.0 as *mut account::RevealPk;
     let casted_tx = unsafe { tx.read() };
     Tx {
-        inner: allocate(casted_tx.payload())
+        inner: allocate(casted_tx.payload()),
     }
 }

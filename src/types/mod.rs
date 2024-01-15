@@ -8,11 +8,8 @@ pub struct Tx {
 impl Tx {
     pub(crate) fn to_native(self) -> namada_light_sdk::namada_core::proto::Tx {
         let native = self.inner as *mut namada_light_sdk::namada_core::proto::Tx;
-        unsafe {
-            native.read()
-        }
+        unsafe { native.read() }
     }
-
 }
 
 #[repr(C)]
@@ -22,10 +19,9 @@ pub struct DenominatedAmount {
 
 impl DenominatedAmount {
     pub fn to_native(self) -> namada_light_sdk::namada_core::types::token::DenominatedAmount {
-        let native = self.inner as *mut namada_light_sdk::namada_core::types::token::DenominatedAmount;
-        unsafe {
-            native.read()
-        }
+        let native =
+            self.inner as *mut namada_light_sdk::namada_core::types::token::DenominatedAmount;
+        unsafe { native.read() }
     }
 }
 
